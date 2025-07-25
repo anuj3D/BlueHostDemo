@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Products</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f4; }
+        .container { max-width: 1200px; margin: auto; padding: 20px; background-color: #fff; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
+        .product-card { border: 1px solid #ddd; border-radius: 8px; overflow: hidden; background-color: #fff; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); transition: transform 0.2s; cursor: pointer; }
+        .product-card:hover { transform: translateY(-5px); }
+        .product-card img { width: 100%; height: 200px; object-fit: cover; }
+        .product-info { padding: 15px; }
+        .product-title { font-size: 1.2em; margin-top: 0; margin-bottom: 10px; color: #333; }
+        .product-description { font-size: 0.9em; color: #666; margin-bottom: 10px; height: 60px; overflow: hidden; }
+        .product-price { font-size: 1.1em; font-weight: bold; color: #007bff; margin-bottom: 15px; }
+        .actions { text-align: center; }
+        .add-to-cart-btn { background-color: #28a745; color: white; padding: 8px 15px; border: none; border-radius: 5px; cursor: pointer; font-size: 0.9em; transition: background-color 0.2s; }
+        .add-to-cart-btn:hover { background-color: #218838; }
+        .profile-selection { margin-bottom: 20px; text-align: center; }
+        .profile-selection label { margin-right: 10px; font-weight: bold; }
+        .profile-selection select { padding: 8px; border-radius: 5px; border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Welcome to Our Product Store!</h1>
+        </div>
+
+        <div class="profile-selection">
+            <label for="profileSelect">Select Profile:</label>
+            <select id="profileSelect">
+                <option value="">Default (Alphabetical)</option>
+                {% for profile in profiles %}
+                    <option value="{{ profile }}">{{ profile|replace('_', ' ')|title }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div id="productContainer" class="product-grid">
+            </div>
+    </div>
+
+    <script>
+        const productContainer = document.getElementById('productContainer');
+        const profileSelect = document.getElementById('profileSelect');
+        let currentProfile = ''; // To store the currently selected profile
+
+        // Function to log actions to the backend
+        async function logAction(actionType, productTitle = null) {
+            const data = { actionType, productTitle, profile: currentProfile };
+            try {
+                await fetch('/log_' + actionType.toLowerCase().replace(' ', '_'), {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+            } catch (error) {
+                console.error('Error logging action:', error);
+            }
+        }
+
+        // Function to render products
+        function renderProducts(products) {
+            productContainer.innerHTML = ''; // Clear existing products
+            products.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.classList.add('product-card');
+                productCard.setAttribute('data-title', product.title); // Store title for logging
+
+                productCard.innerHTML = `
+                    <img src="${product.image_url}" alt="${product.title}">
+                    <div class="product-info">
+                        <h2 class="product-title">${product.title}</h2>
+                        <p class="product-description">${product.description}</p>
+                        <p class="product-price">$${product.price.toFixed(2)}</p>
+                        <div class="actions">
+                            <button class="add-to-cart-btn">Add to Cart</button>
+                        </div>
+                    </div>
+                `;
+
+                // Add event listener for product card click (for logging)
+                productCard.addEventListener('click', (event) => {
+                    // Prevent logging when clicking the "Add to Cart" button directly
+                    if (!event.target.classList.contains('add-to-cart-btn')) {
+                        logAction('Click', product.title);
+                    }
+                });
+
+                // Add event listener for "Add to Cart" button
+                productCard.querySelector('.add-to-cart-btn').addEventListener('click', () => {
+                    logAction('Add to Cart', product.title);
+                    alert(`${product.title} added to cart! (This is a demo, no actual cart functionality)`);
+                });
+
+                productContainer.appendChild(productCard);
+            });
+        }
+
+        // Function to fetch and display products based on profile
+        async function fetchAndDisplayProducts(profile = '') {
+            currentProfile = profile; // Update current profile
+            try {
+                const response = await fetch('/get_products', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ profile: profile })
+                });
+                const products = await response.json();
+                renderProducts(products);
+            } catch (error) {
+                console.error('Error fetching products:', error);
+                productContainer.innerHTML = '<p>Failed to load products. Please try again later.</p>';
+            }
+        }
+
+        // Event listener for profile selection change
+        profileSelect.addEventListener('change', (event) => {
+            fetchAndDisplayProducts(event.target.value);
+        });
+
+        // Initial load of products when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchAndDisplayProducts(''); // Load with default order
+        });
+    </script>
+</body>
+</html>
