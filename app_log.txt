@@ -156,3 +156,15 @@
 [2025-07-26 22:29:07] Action: Product Viewed, Product: Desk Lamp
 [2025-07-26 22:29:07] Action: Product Clicked, Product: Desk Lamp, Profile: home_maker
 [2025-07-26 22:29:12] Action: Product Viewed, Product: Air Fryer
+[2025-07-26 22:30:40] Action: Landing Page Loaded
+[2025-07-26 22:30:47] Action: CSV Loaded Success, Message: Loaded 10 products from products1.csv
+[2025-07-26 22:30:48] Action: Store Page Loaded
+[2025-07-26 22:31:03] Action: Products reordered, Profile: tech_enthusiast, Message: Sorted by categories: ['Electronics', 'Gaming', 'Smart Home']
+[2025-07-26 22:31:06] Action: Products reordered, Profile: home_maker, Message: Sorted by categories: ['Home & Kitchen', 'Office', 'Fitness & Lifestyle']
+[2025-07-26 22:31:09] Action: Product Viewed, Product: External SSD
+[2025-07-26 22:31:09] Action: Product Clicked, Product: External SSD, Profile: home_maker
+[2025-07-26 22:31:13] Action: Product Viewed, Product: Mouse
+[2025-07-26 22:31:16] Action: Product Viewed, Product: Monitor
+[2025-07-26 22:31:24] Action: Product Viewed, Product: Printer
+[2025-07-26 22:31:24] Action: Product Clicked, Product: Printer, Profile: home_maker
+[2025-07-26 22:31:27] Action: Landing Page Loaded
