@@ -42,3 +42,100 @@
 [2025-07-26 17:33:45] Action: Products reordered, Profile: tech_enthusiast, Message: Sorted by categories: ['Electronics', 'Gaming', 'Smart Home']
 [2025-07-26 17:33:52] Action: Products reordered, Profile: tech_enthusiast, Message: Sorted by categories: ['Electronics', 'Gaming', 'Smart Home']
 [2025-07-26 17:34:07] Action: Products reordered, Profile: home_maker, Message: Sorted by categories: ['Home & Kitchen', 'Office', 'Fitness & Lifestyle']
+[2025-07-26 21:41:33] Action: Page Loaded
+[2025-07-26 21:41:44] Action: CSV Upload Success, Message: Uploaded 10 products from products1.csv
+[2025-07-26 21:41:44] Action: Page Loaded
+[2025-07-26 21:42:04] Action: Products reordered, Profile: tech_enthusiast, Message: Sorted by categories: ['Electronics', 'Gaming', 'Smart Home']
+[2025-07-26 21:42:12] Action: Products reordered, Profile: home_maker, Message: Sorted by categories: ['Home & Kitchen', 'Office', 'Fitness & Lifestyle']
+[2025-07-26 21:42:31] Action: Products reordered, Profile: tech_enthusiast, Message: Sorted by categories: ['Electronics', 'Gaming', 'Smart Home']
+[2025-07-26 21:42:33] Action: Products reordered, Profile: home_maker, Message: Sorted by categories: ['Home & Kitchen', 'Office', 'Fitness & Lifestyle']
+[2025-07-26 21:43:00] Action: CSV Upload Success, Message: Uploaded 12 products from products2.csv
+[2025-07-26 21:43:00] Action: Page Loaded
+[2025-07-26 21:43:05] Action: Products reordered, Profile: tech_enthusiast, Message: Sorted by categories: ['Electronics', 'Gaming', 'Smart Home']
+[2025-07-26 21:43:12] Action: Products reordered, Profile: home_maker, Message: Sorted by categories: ['Home & Kitchen', 'Office', 'Fitness & Lifestyle']
+[2025-07-26 21:45:22] Action: CSV Upload Success, Message: Uploaded 22 products from products.csv
+[2025-07-26 21:45:22] Action: Page Loaded
+[2025-07-26 21:45:25] Action: Products reordered, Profile: tech_enthusiast, Message: Sorted by categories: ['Electronics', 'Gaming', 'Smart Home']
+[2025-07-26 21:45:37] Action: Products reordered, Profile: home_maker, Message: Sorted by categories: ['Home & Kitchen', 'Office', 'Fitness & Lifestyle']
+[2025-07-26 21:45:43] Action: Products reordered, Profile: tech_enthusiast, Message: Sorted by categories: ['Electronics', 'Gaming', 'Smart Home']
+[2025-07-26 21:45:45] Action: Products reordered, Profile: home_maker, Message: Sorted by categories: ['Home & Kitchen', 'Office', 'Fitness & Lifestyle']
+[2025-07-26 21:51:51] Action: Page Loaded
+[2025-07-26 21:52:11] Action: CSV Loaded Success, Message: Loaded 12 products from demo_products.csv
+[2025-07-26 21:52:11] Action: Page Loaded
+[2025-07-26 21:52:21] Action: Products reordered, Profile: tech_enthusiast, Message: Sorted by categories: ['Electronics', 'Gaming', 'Smart Home']
+[2025-07-26 21:52:33] Action: CSV Loaded Success, Message: Loaded 22 products from products.csv
+[2025-07-26 21:52:33] Action: Page Loaded
+[2025-07-26 21:52:42] Action: Products reordered, Profile: tech_enthusiast, Message: Sorted by categories: ['Electronics', 'Gaming', 'Smart Home']
+[2025-07-26 21:52:44] Action: Product Viewed, Product: E-Reader
+[2025-07-26 21:52:48] Action: Page Loaded
+[2025-07-26 21:52:52] Action: Products reordered, Profile: tech_enthusiast, Message: Sorted by categories: ['Electronics', 'Gaming', 'Smart Home']
+[2025-07-26 21:52:59] Action: Product Viewed, Product: External SSD
+[2025-07-26 21:52:59] Action: Product Clicked, Product: External SSD, Profile: tech_enthusiast
+[2025-07-26 21:53:06] Action: Product Viewed, Product: Mouse
+[2025-07-26 21:53:17] Action: CSV Loaded Success, Message: Loaded 12 products from demo_products.csv
+[2025-07-26 21:53:17] Action: Page Loaded
+[2025-07-26 21:53:21] Action: Products reordered, Profile: tech_enthusiast, Message: Sorted by categories: ['Electronics', 'Gaming', 'Smart Home']
+[2025-07-26 21:54:24] Action: Page Loaded
+[2025-07-26 21:54:33] Action: CSV Loaded Success, Message: Loaded 22 products from products.csv
+[2025-07-26 21:54:33] Action: Page Loaded
+[2025-07-26 21:55:03] Action: CSV Loaded Success, Message: Loaded 22 products from products.csv
+[2025-07-26 21:55:03] Action: Page Loaded
+[2025-07-26 21:57:28] Action: Page Loaded
+[2025-07-26 21:57:34] Action: CSV Loaded Success, Message: Loaded 22 products from products.csv
+[2025-07-26 21:57:35] Action: Page Loaded
+[2025-07-26 21:57:37] Action: CSV Loaded Success, Message: Loaded 12 products from demo_products.csv
+[2025-07-26 21:57:37] Action: Page Loaded
+[2025-07-26 21:57:52] Action: CSV Loaded Success, Message: Loaded 22 products from products.csv
+[2025-07-26 21:57:52] Action: Page Loaded
+[2025-07-26 21:57:58] Action: Products reordered, Profile: tech_enthusiast, Message: Sorted by categories: ['Electronics', 'Gaming', 'Smart Home']
+[2025-07-26 21:58:15] Action: Product Clicked, Product: Yoga Mat, Profile: tech_enthusiast
+[2025-07-26 21:58:15] Action: Product Viewed, Product: Yoga Mat
+[2025-07-26 21:58:22] Action: Product Viewed, Product: Water Bottle
+[2025-07-26 21:58:29] Action: Product Clicked, Product: Coffee Maker, Profile: tech_enthusiast
+[2025-07-26 21:58:29] Action: Product Viewed, Product: Coffee Maker
+[2025-07-26 21:58:32] Action: Product Viewed, Product: Robot Vacuum
+[2025-07-26 21:58:48] Action: CSV Loaded Success, Message: Loaded 12 products from products2.csv
+[2025-07-26 21:58:48] Action: Page Loaded
+[2025-07-26 21:58:51] Action: CSV Loaded Success, Message: Loaded 12 products from demo_products.csv
+[2025-07-26 21:58:51] Action: Page Loaded
+[2025-07-26 21:58:55] Action: Products reordered, Profile: tech_enthusiast, Message: Sorted by categories: ['Electronics', 'Gaming', 'Smart Home']
+[2025-07-26 21:59:10] Action: CSV Loaded Success, Message: Loaded 12 products from products2.csv
+[2025-07-26 21:59:11] Action: Page Loaded
+[2025-07-26 21:59:14] Action: Products reordered, Profile: tech_enthusiast, Message: Sorted by categories: ['Electronics', 'Gaming', 'Smart Home']
+[2025-07-26 21:59:28] Action: Products reordered, Profile: home_maker, Message: Sorted by categories: ['Home & Kitchen', 'Office', 'Fitness & Lifestyle']
+[2025-07-26 21:59:43] Action: CSV Loaded Success, Message: Loaded 10 products from products1.csv
+[2025-07-26 21:59:43] Action: Page Loaded
+[2025-07-26 21:59:47] Action: Products reordered, Profile: tech_enthusiast, Message: Sorted by categories: ['Electronics', 'Gaming', 'Smart Home']
+[2025-07-26 21:59:58] Action: Products reordered, Profile: home_maker, Message: Sorted by categories: ['Home & Kitchen', 'Office', 'Fitness & Lifestyle']
+[2025-07-26 22:00:02] Action: Product Viewed, Product: Webcam
+[2025-07-26 22:00:02] Action: Product Clicked, Product: Webcam, Profile: home_maker
+[2025-07-26 22:00:49] Action: CSV Loaded Success, Message: Loaded 12 products from products2.csv
+[2025-07-26 22:00:49] Action: Page Loaded
+[2025-07-26 22:00:52] Action: Products reordered, Profile: tech_enthusiast, Message: Sorted by categories: ['Electronics', 'Gaming', 'Smart Home']
+[2025-07-26 22:01:07] Action: Product Viewed, Product: E-Reader
+[2025-07-26 22:01:07] Action: Product Clicked, Product: E-Reader, Profile: tech_enthusiast
+[2025-07-26 22:01:10] Action: Product Viewed, Product: Bluetooth Speaker
+[2025-07-26 22:19:44] Action: Page Loaded
+[2025-07-26 22:19:57] Action: CSV Loaded Success, Message: Loaded 22 products from products.csv
+[2025-07-26 22:19:57] Action: Page Loaded
+[2025-07-26 22:20:02] Action: Products reordered, Profile: tech_enthusiast, Message: Sorted by categories: ['Electronics', 'Gaming', 'Smart Home']
+[2025-07-26 22:20:07] Action: Products reordered, Profile: home_maker, Message: Sorted by categories: ['Home & Kitchen', 'Office', 'Fitness & Lifestyle']
+[2025-07-26 22:20:09] Action: Product Clicked, Product: Air Fryer, Profile: home_maker
+[2025-07-26 22:20:09] Action: Product Viewed, Product: Air Fryer
+[2025-07-26 22:20:19] Action: Page Loaded
+[2025-07-26 22:20:31] Action: Search Performed, Message: Query: 'air fryer', Results: 1
+[2025-07-26 22:20:31] Action: Products reordered, Profile: home_maker, Message: Sorted by categories: ['Home & Kitchen', 'Office', 'Fitness & Lifestyle']
+[2025-07-26 22:20:35] Action: Search Performed, Message: Query: 'webcam', Results: 1
+[2025-07-26 22:20:35] Action: Products reordered, Profile: home_maker, Message: Sorted by categories: ['Home & Kitchen', 'Office', 'Fitness & Lifestyle']
+[2025-07-26 22:20:41] Action: Products reordered, Profile: home_maker, Message: Sorted by categories: ['Home & Kitchen', 'Office', 'Fitness & Lifestyle']
+[2025-07-26 22:21:00] Action: Search Performed, Message: Query: 'laptop', Results: 2
+[2025-07-26 22:21:00] Action: Products reordered, Profile: home_maker, Message: Sorted by categories: ['Home & Kitchen', 'Office', 'Fitness & Lifestyle']
+[2025-07-26 22:21:07] Action: Search Performed, Message: Query: 'monitor', Results: 2
+[2025-07-26 22:21:07] Action: Products reordered, Profile: home_maker, Message: Sorted by categories: ['Home & Kitchen', 'Office', 'Fitness & Lifestyle']
+[2025-07-26 22:21:12] Action: Search Performed, Message: Query: 'monitor', Results: 2
+[2025-07-26 22:21:12] Action: Products reordered, Profile: tech_enthusiast, Message: Sorted by categories: ['Electronics', 'Gaming', 'Smart Home']
+[2025-07-26 22:21:14] Action: Search Performed, Message: Query: 'monitor', Results: 2
+[2025-07-26 22:21:14] Action: Products reordered, Profile: home_maker, Message: Sorted by categories: ['Home & Kitchen', 'Office', 'Fitness & Lifestyle']
+[2025-07-26 22:21:17] Action: Products reordered, Profile: home_maker, Message: Sorted by categories: ['Home & Kitchen', 'Office', 'Fitness & Lifestyle']
+[2025-07-26 22:21:25] Action: Product Viewed, Product: Coffee Maker
+[2025-07-26 22:21:25] Action: Product Clicked, Product: Coffee Maker, Profile: home_maker

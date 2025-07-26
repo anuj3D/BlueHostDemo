@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ main_product.title }} - Product Details</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Reusing some base styles from index.html */
+        body { font-family: 'Inter', sans-serif; margin: 20px; background-color: #f4f4f4; color: #333; }
+        .container { max-width: 1200px; margin: auto; padding: 20px; background-color: #fff; border-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        h1 { color: #0056b3; }
+
+        /* Search Bar (Copied from index.html) */
+        .search-bar {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 25px;
+            gap: 10px;
+        }
+        .search-bar input[type="text"] {
+            padding: 10px 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+            width: 60%;
+            max-width: 400px;
+        }
+        .search-bar button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+        .search-bar button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Flash Messages */
+        .flash-message { padding: 10px; margin-bottom: 20px; border-radius: 8px; font-weight: bold; text-align: center; }
+        .flash-message.success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .flash-message.error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .add-to-cart-btn { background-color: #007bff; color: white; padding: 12px 25px; border: none; border-radius: 6px; cursor: pointer; font-size: 1.1em; transition: background-color 0.3s ease, transform 0.1s ease; margin-top: 15px; display: inline-block;}
+        .add-to-cart-btn:hover { background-color: #0056b3; transform: translateY(-2px); }
+        .add-to-cart-btn:active { transform: translateY(0); }
+
+        /* Product Detail Layout */
+        .product-detail-section { display: flex; flex-wrap: wrap; gap: 30px; align-items: flex-start; margin-bottom: 40px; }
+        .product-detail-image { flex: 1; min-width: 300px; max-width: 500px; border: 1px solid #eee; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .product-detail-image img { width: 100%; height: auto; display: block; }
+        .product-detail-info { flex: 2; min-width: 300px; }
+        .product-detail-info h2 { font-size: 2em; margin-top: 0; margin-bottom: 10px; color: #333; }
+        .product-detail-info .category { font-size: 0.9em; color: #888; margin-bottom: 10px; }
+        .product-detail-info .price { font-size: 1.8em; font-weight: bold; color: #007bff; margin-bottom: 20px; }
+        .product-detail-info .description { font-size: 1.1em; line-height: 1.6; color: #555; margin-bottom: 20px; }
+        
+        /* Standard Content Sections */
+        .standard-content { margin-top: 40px; border-top: 1px solid #eee; padding-top: 30px; }
+        .standard-content h3 { font-size: 1.5em; color: #0056b3; margin-bottom: 15px; border-bottom: 2px solid #e0e0e0; padding-bottom: 5px; }
+        .standard-content p, .standard-content ul { font-size: 1em; line-height: 1.6; color: #555; margin-bottom: 10px; }
+        .standard-content ul { list-style-type: disc; margin-left: 20px; }
+
+        /* Similar Products Section */
+        .similar-products { margin-top: 50px; }
+        .similar-products h3 { font-size: 1.7em; margin-bottom: 25px; color: #333; text-align: center; }
+        .similar-products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
+        .similar-product-card { border: 1px solid #ddd; border-radius: 8px; overflow: hidden; background-color: #fff; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); transition: transform 0.2s; cursor: pointer; text-decoration: none; color: inherit; }
+        .similar-product-card:hover { transform: translateY(-5px); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); }
+        .similar-product-card img { width: 100%; height: 180px; object-fit: cover; border-bottom: 1px solid #eee; }
+        .similar-product-info { padding: 12px; text-align: center; }
+        .similar-product-info h4 { font-size: 1.1em; margin-top: 0; margin-bottom: 5px; color: #333; }
+        .similar-product-info .price { font-size: 1em; font-weight: bold; color: #007bff; }
+
+        /* Back button */
+        .back-button {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background-color: #6c757d;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .back-button:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="{{ url_for('index') }}" class="back-button">← Back to Store</a>
+
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Search products...">
+            <button id="searchButton">Search</button>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="product-detail-section">
+            <div class="product-detail-image">
+                <img src="{{ main_product.image_url }}" alt="{{ main_product.title }}" onerror="this.onerror=null;this.src='https://placehold.co/500x500/808080/FFFFFF?text=No+Image';">
+            </div>
+            <div class="product-detail-info">
+                <h2>{{ main_product.title }}</h2>
+                <p class="category">Category: {{ main_product.category }}</p>
+                <p class="price">${{ main_product.price | round(2) }}</p>
+                <p class="description">{{ main_product.description }}</p>
+                <button class="add-to-cart-btn" data-product-title="{{ main_product.title }}">Add to Cart</button>
+            </div>
+        </div>
+
+        <div class="standard-content">
+            <h3>About This Product</h3>
+            <p>Dive deep into the features that make {{ main_product.title }} stand out. Crafted with precision and designed for performance, this product is built to exceed your expectations. Whether for professional use or daily convenience, its innovative design ensures a seamless experience.</p>
+
+            <h3>What's in the Box</h3>
+            <ul>
+                <li>1 x {{ main_product.title }}</li>
+                <li>User Manual</li>
+                <li>Charging Cable (if applicable)</li>
+                <li>Warranty Card</li>
+            </ul>
+
+            <h3>Customer Reviews (Placeholder)</h3>
+            <p><strong>⭐⭐⭐⭐⭐ (4.8/5) based on 125 reviews</strong></p>
+            <p>"Absolutely love it! A game-changer for my daily routine." - Jane D.</p>
+            <p>"Exceeded my expectations, highly recommended!" - John S.</p>
+
+            <h3>Shipping & Returns</h3>
+            <p>Enjoy fast and reliable shipping across the globe. We offer a 30-day no-questions-asked return policy. Your satisfaction is our priority.</p>
+
+            <h3>Why Buy From Us?</h3>
+            <ul>
+                <li>Premium Quality Products</li>
+                <li>Exceptional Customer Support</li>
+                <li>Secure Online Shopping</li>
+                <li>Eco-Friendly Packaging</li>
+            </ul>
+        </div>
+
+        {% if similar_products %}
+        <div class="similar-products">
+            <h3>Similar Products You Might Like</h3>
+            <div class="similar-products-grid">
+                {% for product in similar_products %}
+                <a href="{{ url_for('product_detail', product_title_encoded=product.url_encoded_title) }}" class="similar-product-card">
+                    <img src="{{ product.image_url }}" alt="{{ product.title }}" onerror="this.onerror=null;this.src='https://placehold.co/180x180/808080/FFFFFF?text=No+Image';">
+                    <div class="similar-product-info">
+                        <h4>{{ product.title }}</h4>
+                        <p class="price">${{ product.price | round(2) }}</p>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        // Re-use log_action from main page
+        async function logAction(actionType, productTitle = null) {
+            const profile = 'N/A_Detail_Page'; // Log a placeholder profile from detail page
+            const data = { actionType, productTitle, profile: profile };
+            try {
+                await fetch('/log_' + actionType.toLowerCase().replace(' ', '_'), {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+            } catch (error) {
+                console.error('Error logging action:', error);
+            }
+        }
+
+        // Add to Cart functionality on product detail page
+        document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+            button.addEventListener('click', (event) => {
+                const productTitle = event.target.dataset.productTitle;
+                logAction('Add to Cart', productTitle);
+                const messageBox = document.createElement('div');
+                messageBox.style.cssText = `
+                    position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+                    background-color: #333; color: white; padding: 15px 30px; border-radius: 8px;
+                    box-shadow: 0 5px 15px rgba(0,0,0,0.3); z-index: 1000; font-size: 1.1em;
+                    animation: fadeOut 3s forwards;
+                `;
+                messageBox.textContent = `${productTitle} added to cart!`;
+                document.body.appendChild(messageBox);
+
+                const styleElement = document.createElement('style');
+                styleElement.innerHTML = `
+                    @keyframes fadeOut {
+                        0% { opacity: 1; }
+                        80% { opacity: 1; }
+                        100% { opacity: 0; display: none; }
+                    }
+                `;
+                document.head.appendChild(styleElement);
+
+                setTimeout(() => {
+                    messageBox.remove();
+                    styleElement.remove();
+                }, 3000);
+            });
+        });
+
+        // NEW: Search functionality for product detail page
+        const searchInputDetail = document.getElementById('searchInput');
+        const searchButtonDetail = document.getElementById('searchButton');
+
+        function performSearchFromDetailPage() {
+            const query = searchInputDetail.value;
+            // Redirect to the main page with the search query as a URL parameter
+            window.location.href = `/?search=${encodeURIComponent(query)}`;
+        }
+
+        searchButtonDetail.addEventListener('click', performSearchFromDetailPage);
+
+        searchInputDetail.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') {
+                performSearchFromDetailPage();
+            }
+        });
+    </script>
+</body>
+</html>
