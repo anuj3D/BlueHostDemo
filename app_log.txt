@@ -139,3 +139,20 @@
 [2025-07-26 22:21:17] Action: Products reordered, Profile: home_maker, Message: Sorted by categories: ['Home & Kitchen', 'Office', 'Fitness & Lifestyle']
 [2025-07-26 22:21:25] Action: Product Viewed, Product: Coffee Maker
 [2025-07-26 22:21:25] Action: Product Clicked, Product: Coffee Maker, Profile: home_maker
+[2025-07-26 22:27:49] Action: Landing Page Loaded
+[2025-07-26 22:27:57] Action: CSV Loaded Success, Message: Loaded 22 products from products.csv
+[2025-07-26 22:27:57] Action: Store Page Loaded
+[2025-07-26 22:28:05] Action: Products reordered, Profile: tech_enthusiast, Message: Sorted by categories: ['Electronics', 'Gaming', 'Smart Home']
+[2025-07-26 22:28:20] Action: Products reordered, Profile: home_maker, Message: Sorted by categories: ['Home & Kitchen', 'Office', 'Fitness & Lifestyle']
+[2025-07-26 22:28:27] Action: Product Viewed, Product: Coffee Maker
+[2025-07-26 22:28:27] Action: Product Clicked, Product: Coffee Maker, Profile: home_maker
+[2025-07-26 22:28:40] Action: Store Page Loaded
+[2025-07-26 22:28:44] Action: Products reordered, Profile: tech_enthusiast, Message: Sorted by categories: ['Electronics', 'Gaming', 'Smart Home']
+[2025-07-26 22:28:49] Action: Search Performed, Message: Query: 'monitor', Results: 2
+[2025-07-26 22:28:49] Action: Products reordered, Profile: tech_enthusiast, Message: Sorted by categories: ['Electronics', 'Gaming', 'Smart Home']
+[2025-07-26 22:28:57] Action: Search Performed, Message: Query: 'monitor', Results: 2
+[2025-07-26 22:28:57] Action: Products reordered, Profile: home_maker, Message: Sorted by categories: ['Home & Kitchen', 'Office', 'Fitness & Lifestyle']
+[2025-07-26 22:29:01] Action: Products reordered, Profile: home_maker, Message: Sorted by categories: ['Home & Kitchen', 'Office', 'Fitness & Lifestyle']
+[2025-07-26 22:29:07] Action: Product Viewed, Product: Desk Lamp
+[2025-07-26 22:29:07] Action: Product Clicked, Product: Desk Lamp, Profile: home_maker
+[2025-07-26 22:29:12] Action: Product Viewed, Product: Air Fryer

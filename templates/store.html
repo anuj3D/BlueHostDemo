@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Dynamic Product Store</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* Base Styles - Apply to both themes */
+        body { font-family: 'Inter', sans-serif; margin: 20px; background-color: #f4f4f4; color: #333; transition: background-color 0.3s ease; }
+        .container { max-width: 1200px; margin: auto; padding: 20px; background-color: #fff; border-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); }
+        .header { text-align: center; margin-bottom: 30px; }
+        h1 { color: #0056b3; }
+
+        /* Search Bar */
+        .search-bar {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 25px;
+            gap: 10px;
+        }
+        .search-bar input[type="text"] {
+            padding: 10px 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+            width: 60%;
+            max-width: 400px;
+        }
+        .search-bar button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+        .search-bar button:hover {
+            background-color: #0056b3;
+        }
+
+
+        /* Flash Messages */
+        .flash-message { padding: 10px; margin-bottom: 20px; border-radius: 8px; font-weight: bold; text-align: center; }
+        .flash-message.success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .flash-message.error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+
+        /* Profile Selection */
+        .profile-selection { margin-bottom: 20px; text-align: center; background-color: #f0f8ff; padding: 15px; border-radius: 10px; border: 1px solid #add8e6; }
+        .profile-selection label { margin-right: 10px; font-weight: bold; color: #0056b3; }
+        .profile-selection select { padding: 8px; border-radius: 5px; border: 1px solid #a7d9f7; background-color: #e6f7ff; cursor: pointer; }
+
+        /* Style Selector */
+        .style-selector { margin-bottom: 20px; text-align: center; background-color: #fff3e0; padding: 15px; border-radius: 10px; border: 1px solid #ffe0b2; }
+        .style-selector label { margin: 0 15px; font-weight: bold; color: #ff9800; }
+        .style-selector input[type="radio"] { margin-right: 5px; }
+
+
+        /* Product Grid Layout */
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
+        .product-grid > p { text-align: center; width: 100%; grid-column: 1 / -1; color: #666; font-style: italic; }
+
+        /* Base Product Card Styles */
+        .product-card { border: 1px solid #ddd; border-radius: 10px; overflow: hidden; background-color: #fff; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.3s ease; cursor: pointer; text-decoration: none; color: inherit; }
+        .product-card:hover { transform: translateY(-7px); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); }
+        .product-card img { width: 100%; height: 220px; object-fit: cover; border-bottom: 1px solid #eee; }
+        .product-info { padding: 18px; }
+        .product-title { font-size: 1.3em; margin-top: 0; margin-bottom: 10px; color: #333; font-weight: bold; }
+        .product-description { font-size: 0.95em; color: #666; margin-bottom: 12px; height: 70px; overflow: hidden; line-height: 1.4; }
+        .product-price { font-size: 1.25em; font-weight: bold; color: #007bff; margin-bottom: 18px; }
+        .actions { text-align: center; }
+        .add-to-cart-btn { background-color: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-size: 1em; transition: background-color 0.3s ease, transform 0.1s ease; }
+        .add-to-cart-btn:hover { background-color: #0056b3; transform: translateY(-2px); }
+        .add-to-cart-btn:active { transform: translateY(0); }
+
+        /* --- Amazon Style Specifics (Default) --- */
+        body.amazon-style {
+            background-color: #f7f7f7;
+        }
+        body.amazon-style .product-card {
+            border: 1px solid #c7c7c7;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,.08);
+        }
+        body.amazon-style .product-card img {
+            border-bottom: none;
+        }
+        body.amazon-style .product-info {
+            background-color: #fcfcfc;
+            padding: 15px;
+        }
+        body.amazon-style .product-title {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 700;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+            min-height: 2.2em;
+            overflow: hidden;
+            line-height: 1.1;
+        }
+        body.amazon-style .product-description {
+            display: none;
+        }
+        body.amazon-style .product-price {
+            color: #B12704;
+            font-family: Arial, sans-serif;
+            font-size: 1.4em;
+            margin-bottom: 10px;
+        }
+        body.amazon-style .add-to-cart-btn {
+            background-color: #FFD814;
+            color: #0F1111;
+            border-color: #FCD200;
+            box-shadow: 0 2px 5px 0 rgba(213, 217, 217, .5);
+            font-weight: bold;
+            text-shadow: none;
+        }
+        body.amazon-style .add-to-cart-btn:hover {
+            background-color: #F7CA00;
+        }
+
+        /* --- eBay Style Specifics --- */
+        body.ebay-style {
+            background-color: #e6e6e6;
+        }
+        body.ebay-style .product-card {
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-shadow: none;
+        }
+        body.ebay-style .product-card:hover {
+            box-shadow: 0 0 8px rgba(0,0,0,0.1);
+        }
+        body.ebay-style .product-card img {
+            border-bottom: 1px solid #e0e0e0;
+        }
+        body.ebay-style .product-info {
+            padding: 12px;
+            background-color: #f8f8f8;
+        }
+        body.ebay-style .product-title {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 400;
+            font-size: 1.15em;
+            color: #0064d3;
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+        body.ebay-style .product-description {
+            font-size: 0.85em;
+            height: auto;
+            overflow: visible;
+            margin-bottom: 8px;
+        }
+        body.ebay-style .product-price {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.3em;
+            color: #333;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: right;
+        }
+        body.ebay-style .actions {
+            text-align: right;
+        }
+        body.ebay-style .add-to-cart-btn {
+            background-color: #0064d3;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        body.ebay-style .add-to-cart-btn:hover {
+            background-color: #0050a3;
+        }
+
+        /* About This Demo Section - Only in index.html, not store.html */
+    </style>
+</head>
+<body class="amazon-style">
+    <div class="container">
+        <div class="header">
+            <h1>Our Dynamic Product Store</h1>
+            <p>Your customizable e-commerce display.</p>
+        </div>
+
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Search products...">
+            <button id="searchButton">Search</button>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">{{ message | safe }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="style-selector">
+            <label>Choose Display Style:</label>
+            <input type="radio" id="styleAmazon" name="displayStyle" value="amazon-style" checked>
+            <label for="styleAmazon">Amazon Style</label>
+            <input type="radio" id="styleEbay" name="displayStyle" value="ebay-style">
+            <label for="styleEbay">eBay Style</label>
+        </div>
+
+        <div class="profile-selection">
+            <label for="profileSelect">Select Profile:</label>
+            <select id="profileSelect">
+                <option value="">Default (Alphabetical)</option>
+                {% for profile in profiles %}
+                    <option value="{{ profile }}">{{ profile|replace('_', ' ')|title }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div id="productContainer" class="product-grid">
+            <p>Loading products...</p>
+        </div>
+    </div>
+
+    <script>
+        const body = document.body;
+        const productContainer = document.getElementById('productContainer');
+        const profileSelect = document.getElementById('profileSelect');
+        const styleRadios = document.querySelectorAll('input[name="displayStyle"]');
+        const searchInput = document.getElementById('searchInput');
+        const searchButton = document.getElementById('searchButton');
+        let currentProfile = '';
+        let currentSearchQuery = '';
+
+        async function logAction(actionType, productTitle = null) {
+            const data = { actionType, productTitle, profile: currentProfile, search_query: currentSearchQuery };
+            try {
+                await fetch('/log_' + actionType.toLowerCase().replace(' ', '_'), {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+            } catch (error) {
+                console.error('Error logging action:', error);
+            }
+        }
+
+        function renderProducts(products) {
+            productContainer.innerHTML = '';
+            if (products.length === 0) {
+                let message = 'No products available.';
+                if (currentSearchQuery) {
+                    message = `No results found for "${currentSearchQuery}".`;
+                } else {
+                    message = 'No products loaded. Please upload a CSV file to display the store inventory.'; // This message should ideally not appear on store.html after successful load
+                }
+                productContainer.innerHTML = `<p style="text-align: center; width: 100%; grid-column: 1 / -1;">${message}</p>`;
+                return;
+            }
+
+            products.forEach(product => {
+                const productCard = document.createElement('a');
+                productCard.href = `/product/${product.url_encoded_title}`;
+                productCard.classList.add('product-card');
+                
+                productCard.innerHTML = `
+                    <img src="${product.image_url}" alt="${product.title}" onerror="this.onerror=null;this.src='https://placehold.co/220x220/808080/FFFFFF?text=No+Image';">
+                    <div class="product-info">
+                        <h2 class="product-title">${product.title}</h2>
+                        <p class="product-description">${product.description}</p>
+                        <p class="product-price">$${product.price.toFixed(2)}</p>
+                        <div class="actions">
+                            <button class="add-to-cart-btn" data-product-title="${product.title}" onclick="event.preventDefault(); event.stopPropagation();">Add to Cart</button>
+                        </div>
+                    </div>
+                `;
+                
+                productCard.addEventListener('click', (event) => {
+                    if (!event.target.classList.contains('add-to-cart-btn')) {
+                        logAction('Click', product.title);
+                    }
+                });
+
+                productCard.querySelector('.add-to-cart-btn').addEventListener('click', (event) => {
+                    const btnProductTitle = event.target.dataset.productTitle;
+                    logAction('Add to Cart', btnProductTitle);
+                    const messageBox = document.createElement('div');
+                    messageBox.style.cssText = `
+                        position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+                        background-color: #333; color: white; padding: 15px 30px; border-radius: 8px;
+                        box-shadow: 0 5px 15px rgba(0,0,0,0.3); z-index: 1000; font-size: 1.1em;
+                        animation: fadeOut 3s forwards;
+                    `;
+                    messageBox.textContent = `${btnProductTitle} added to cart!`;
+                    document.body.appendChild(messageBox);
+
+                    const styleElement = document.createElement('style');
+                    styleElement.innerHTML = `
+                        @keyframes fadeOut {
+                            0% { opacity: 1; }
+                            80% { opacity: 1; }
+                            100% { opacity: 0; display: none; }
+                        }
+                    `;
+                    document.head.appendChild(styleElement);
+
+                    setTimeout(() => {
+                        messageBox.remove();
+                        styleElement.remove();
+                    }, 3000);
+                });
+
+                productContainer.appendChild(productCard);
+            });
+        }
+
+        async function fetchAndDisplayProducts(profile = '', query = '') {
+            currentProfile = profile;
+            currentSearchQuery = query;
+
+            const data = { profile: currentProfile, search_query: currentSearchQuery };
+
+            try {
+                const response = await fetch('/get_products', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const products = await response.json();
+                renderProducts(products);
+            } catch (error) {
+                console.error('Error fetching products:', error);
+                productContainer.innerHTML = '<p style="text-align: center; width: 100%; grid-column: 1 / -1;">Failed to load products. Please try again later.</p>';
+            }
+        }
+
+        profileSelect.addEventListener('change', (event) => {
+            fetchAndDisplayProducts(event.target.value, searchInput.value);
+        });
+
+        searchButton.addEventListener('click', () => {
+            fetchAndDisplayProducts(profileSelect.value, searchInput.value);
+            logAction("Search Initiated", message=`User searched for "${searchInput.value}"`);
+        });
+
+        searchInput.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') {
+                searchButton.click();
+            }
+        });
+
+
+        // Style selection logic
+        function applyStyle(styleName) {
+            body.classList.remove('amazon-style', 'ebay-style');
+            body.classList.add(styleName);
+            localStorage.setItem('displayStyle', styleName);
+        }
+
+        styleRadios.forEach(radio => {
+            radio.addEventListener('change', (event) => {
+                applyStyle(event.target.value);
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Apply saved style on page load
+            const savedStyle = localStorage.getItem('displayStyle');
+            if (savedStyle) {
+                applyStyle(savedStyle);
+                document.getElementById('style' + savedStyle.replace('-style', '')).checked = true;
+            } else {
+                applyStyle('amazon-style'); // Default if no style saved
+            }
+
+            // Load products on DOMContentLoaded, including any search query from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const initialSearchQuery = urlParams.get('search') || '';
+            if (initialSearchQuery) {
+                searchInput.value = initialSearchQuery;
+            }
+            fetchAndDisplayProducts(profileSelect.value, initialSearchQuery);
+        });
+    </script>
+</body>
+</html>

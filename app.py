@@ -81,7 +81,7 @@ def parse_and_load_csv_data(csv_stream_content, filename):
             return False
 
         current_products_data = new_products
-        flash(f'Successfully loaded products from {filename}! ({len(new_products)} products loaded)', 'success')
+        flash(f'Successfully loaded products from {filename}! ({len(new_products)} products loaded). <a href="{url_for("store")}" style="color: green; font-weight: bold;">Go to Store!</a>', 'success')
         log_action("CSV Loaded Success", message=f"Loaded {len(new_products)} products from {filename}")
         return True
             
@@ -107,10 +107,24 @@ def log_action(action_type, product_title=None, profile=None, message=None):
         f.write(log_entry + '\n')
     print(f"Logged: {log_entry}") # For debugging purposes
 
+# The landing page, now without store display
 @app.route('/')
 def index():
-    log_action("Page Loaded")
-    return render_template('index.html', products=current_products_data, profiles=USER_PROFILES.keys())
+    log_action("Landing Page Loaded")
+    # This renders the simplified index.html
+    return render_template('index.html', profiles=USER_PROFILES.keys()) # profiles not strictly needed here but harmless
+
+# NEW: The actual store page
+@app.route('/store')
+def store():
+    # Enforce that store can only be viewed if products are loaded
+    if not current_products_data:
+        flash("Please upload a CSV file to create your store first!", 'error')
+        log_action("Store Access Failed", message="Attempted to access store with no products loaded.")
+        return redirect(url_for('index')) # Redirect back to the upload page
+        
+    log_action("Store Page Loaded")
+    return render_template('store.html', products=current_products_data, profiles=USER_PROFILES.keys())
 
 @app.route('/upload_csv', methods=['POST'])
 def upload_csv():
@@ -128,10 +142,11 @@ def upload_csv():
     
     if file and allowed_file(file.filename):
         csv_content = file.stream.read().decode("UTF8")
+        # parse_and_load_csv_data now handles flash message and returns success status
         if parse_and_load_csv_data(csv_content, file.filename):
-            return redirect(url_for('index'))
+            return redirect(url_for('store')) # Redirect to the new store page
         else:
-            return redirect(url_for('index'))
+            return redirect(url_for('index')) # Redirect back to upload page on failure
     else:
         flash('Invalid file type. Please upload a CSV file.', 'error')
         log_action("CSV Upload Failed", message="Invalid file type.")
@@ -141,18 +156,19 @@ def upload_csv():
 def load_demo_store():
     """Route to load a predefined demo store."""
     if parse_and_load_csv_data(DEMO_CSV_CONTENT, "demo_products.csv"):
-        pass
-    return redirect(url_for('index'))
+        return redirect(url_for('store')) # Redirect to the new store page
+    else:
+        return redirect(url_for('index')) # Redirect back to upload page on failure
+
 
 @app.route('/get_products', methods=['POST'])
 def get_products():
     data = request.json
     selected_profile = data.get('profile')
-    search_query = data.get('search_query', '').strip().lower() # NEW: Get search query
+    search_query = data.get('search_query', '').strip().lower()
     
     products = list(current_products_data)
 
-    # NEW: Filter products by search query first
     if search_query:
         products = [
             p for p in products 
@@ -202,9 +218,9 @@ def product_detail(product_title_encoded):
             break
 
     if not main_product:
-        flash(f"Product '{product_title}' not found.", 'error')
+        flash(f"Product '{product_title}' not found. Please load products first.", 'error')
         log_action("Product Viewed Failed", message=f"Product '{product_title}' not found.")
-        return redirect(url_for('index'))
+        return redirect(url_for('index')) # Redirect back to main upload page
 
     log_action("Product Viewed", product_title=main_product['title'])
 
