@@ -5,29 +5,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Our Products</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f4; }
-        .container { max-width: 1200px; margin: auto; padding: 20px; background-color: #fff; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+        body { font-family: 'Inter', sans-serif; margin: 20px; background-color: #f4f4f4; color: #333; }
+        .container { max-width: 1200px; margin: auto; padding: 20px; background-color: #fff; border-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); }
         .header { text-align: center; margin-bottom: 30px; }
-        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
-        .product-card { border: 1px solid #ddd; border-radius: 8px; overflow: hidden; background-color: #fff; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); transition: transform 0.2s; cursor: pointer; }
-        .product-card:hover { transform: translateY(-5px); }
-        .product-card img { width: 100%; height: 200px; object-fit: cover; }
-        .product-info { padding: 15px; }
-        .product-title { font-size: 1.2em; margin-top: 0; margin-bottom: 10px; color: #333; }
-        .product-description { font-size: 0.9em; color: #666; margin-bottom: 10px; height: 60px; overflow: hidden; }
-        .product-price { font-size: 1.1em; font-weight: bold; color: #007bff; margin-bottom: 15px; }
+        h1 { color: #0056b3; }
+        .upload-section { background-color: #e9f7ef; padding: 20px; border-radius: 10px; margin-bottom: 30px; text-align: center; border: 1px dashed #28a745; }
+        .upload-section h2 { color: #28a745; margin-top: 0; }
+        .upload-section input[type="file"] { border: 1px solid #ccc; padding: 8px; border-radius: 5px; background-color: #fff; }
+        .upload-section button { background-color: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 1em; transition: background-color 0.3s ease; margin-left: 10px; }
+        .upload-section button:hover { background-color: #218838; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); }
+        .flash-message { padding: 10px; margin-bottom: 20px; border-radius: 8px; font-weight: bold; text-align: center; }
+        .flash-message.success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .flash-message.error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+
+        .profile-selection { margin-bottom: 20px; text-align: center; background-color: #f0f8ff; padding: 15px; border-radius: 10px; border: 1px solid #add8e6; }
+        .profile-selection label { margin-right: 10px; font-weight: bold; color: #0056b3; }
+        .profile-selection select { padding: 8px; border-radius: 5px; border: 1px solid #a7d9f7; background-color: #e6f7ff; cursor: pointer; }
+
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
+        .product-card { border: 1px solid #ddd; border-radius: 10px; overflow: hidden; background-color: #fff; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); transition: transform 0.2s ease, box-shadow 0.2s ease; cursor: pointer; }
+        .product-card:hover { transform: translateY(-7px); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); }
+        .product-card img { width: 100%; height: 220px; object-fit: cover; border-bottom: 1px solid #eee; }
+        .product-info { padding: 18px; }
+        .product-title { font-size: 1.3em; margin-top: 0; margin-bottom: 10px; color: #333; font-weight: bold; }
+        .product-description { font-size: 0.95em; color: #666; margin-bottom: 12px; height: 70px; overflow: hidden; line-height: 1.4; }
+        .product-price { font-size: 1.25em; font-weight: bold; color: #007bff; margin-bottom: 18px; }
         .actions { text-align: center; }
-        .add-to-cart-btn { background-color: #28a745; color: white; padding: 8px 15px; border: none; border-radius: 5px; cursor: pointer; font-size: 0.9em; transition: background-color 0.2s; }
-        .add-to-cart-btn:hover { background-color: #218838; }
-        .profile-selection { margin-bottom: 20px; text-align: center; }
-        .profile-selection label { margin-right: 10px; font-weight: bold; }
-        .profile-selection select { padding: 8px; border-radius: 5px; border: 1px solid #ccc; }
+        .add-to-cart-btn { background-color: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-size: 1em; transition: background-color 0.3s ease, transform 0.1s ease; }
+        .add-to-cart-btn:hover { background-color: #0056b3; transform: translateY(-2px); }
+        .add-to-cart-btn:active { transform: translateY(0); }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>Welcome to Our Product Store!</h1>
+            <h1>Our Product Store</h1>
+        </div>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- CSV Upload Section -->
+        <div class="upload-section">
+            <h2>Upload New Product Inventory (CSV)</h2>
+            <form action="/upload_csv" method="post" enctype="multipart/form-data">
+                <input type="file" name="csv_file" accept=".csv" required>
+                <button type="submit">Upload CSV</button>
+            </form>
+            <p style="font-size: 0.85em; color: #555; margin-top: 15px;">
+                CSV should have columns: `title`, `description`, `image_url`, `price`.
+            </p>
         </div>
 
         <div class="profile-selection">
@@ -41,7 +75,8 @@
         </div>
 
         <div id="productContainer" class="product-grid">
-            </div>
+            <!-- Products will be loaded here by JavaScript -->
+        </div>
     </div>
 
     <script>
@@ -66,13 +101,18 @@
         // Function to render products
         function renderProducts(products) {
             productContainer.innerHTML = ''; // Clear existing products
+            if (products.length === 0) {
+                productContainer.innerHTML = '<p style="text-align: center; width: 100%; grid-column: 1 / -1;">No products available. Please upload a CSV file.</p>';
+                return;
+            }
+
             products.forEach(product => {
                 const productCard = document.createElement('div');
                 productCard.classList.add('product-card');
                 productCard.setAttribute('data-title', product.title); // Store title for logging
 
                 productCard.innerHTML = `
-                    <img src="${product.image_url}" alt="${product.title}">
+                    <img src="${product.image_url}" alt="${product.title}" onerror="this.onerror=null;this.src='https://placehold.co/220x220/808080/FFFFFF?text=No+Image';">
                     <div class="product-info">
                         <h2 class="product-title">${product.title}</h2>
                         <p class="product-description">${product.description}</p>
@@ -94,7 +134,32 @@
                 // Add event listener for "Add to Cart" button
                 productCard.querySelector('.add-to-cart-btn').addEventListener('click', () => {
                     logAction('Add to Cart', product.title);
-                    alert(`${product.title} added to cart! (This is a demo, no actual cart functionality)`);
+                    // Using a simple alert for demo, replace with custom modal for production
+                    const messageBox = document.createElement('div');
+                    messageBox.style.cssText = `
+                        position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+                        background-color: #333; color: white; padding: 15px 30px; border-radius: 8px;
+                        box-shadow: 0 5px 15px rgba(0,0,0,0.3); z-index: 1000; font-size: 1.1em;
+                        animation: fadeOut 3s forwards;
+                    `;
+                    messageBox.textContent = `${product.title} added to cart!`;
+                    document.body.appendChild(messageBox);
+
+                    // CSS for fadeOut animation
+                    const style = document.createElement('style');
+                    style.innerHTML = `
+                        @keyframes fadeOut {
+                            0% { opacity: 1; }
+                            80% { opacity: 1; }
+                            100% { opacity: 0; display: none; }
+                        }
+                    `;
+                    document.head.appendChild(style);
+
+                    setTimeout(() => {
+                        messageBox.remove();
+                        style.remove();
+                    }, 3000); // Remove after 3 seconds
                 });
 
                 productContainer.appendChild(productCard);
@@ -114,7 +179,7 @@
                 renderProducts(products);
             } catch (error) {
                 console.error('Error fetching products:', error);
-                productContainer.innerHTML = '<p>Failed to load products. Please try again later.</p>';
+                productContainer.innerHTML = '<p style="text-align: center; width: 100%; grid-column: 1 / -1;">Failed to load products. Please try again later.</p>';
             }
         }
 
