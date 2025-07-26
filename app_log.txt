@@ -1,0 +1,44 @@
+[2025-07-26 17:23:10] Action: Page Loaded
+[2025-07-26 17:23:19] Action: CSV Upload Success, Message: Uploaded 10 products from products1.csv
+[2025-07-26 17:23:19] Action: Page Loaded
+[2025-07-26 17:23:24] Action: Products reordered, Profile: tech_enthusiast
+[2025-07-26 17:23:28] Action: Products reordered, Profile: casual_user
+[2025-07-26 17:23:35] Action: CSV Upload Success, Message: Uploaded 12 products from products2.csv
+[2025-07-26 17:23:35] Action: Page Loaded
+[2025-07-26 17:23:40] Action: Products reordered, Profile: tech_enthusiast
+[2025-07-26 17:23:43] Action: Products reordered, Profile: casual_user
+[2025-07-26 17:23:51] Action: Products reordered, Profile: tech_enthusiast
+[2025-07-26 17:24:00] Action: Products reordered, Profile: casual_user
+[2025-07-26 17:29:01] Action: Page Loaded
+[2025-07-26 17:29:09] Action: CSV Upload Success, Message: Uploaded 10 products from products1.csv
+[2025-07-26 17:29:09] Action: Page Loaded
+[2025-07-26 17:29:14] Action: Products reordered, Profile: tech_enthusiast, Message: Sorted by categories: ['Electronics', 'Smart Home', 'Gaming', 'Audio']
+[2025-07-26 17:29:17] Action: Products reordered, Profile: home_maker, Message: Sorted by categories: ['Home & Kitchen', 'Office', 'Smart Home']
+[2025-07-26 17:29:20] Action: Products reordered, Profile: fitness_fan, Message: Sorted by categories: ['Fitness', 'Audio', 'Electronics']
+[2025-07-26 17:29:23] Action: Products reordered, Profile: home_maker, Message: Sorted by categories: ['Home & Kitchen', 'Office', 'Smart Home']
+[2025-07-26 17:29:28] Action: Products reordered, Profile: tech_enthusiast, Message: Sorted by categories: ['Electronics', 'Smart Home', 'Gaming', 'Audio']
+[2025-07-26 17:29:36] Action: Products reordered, Profile: home_maker, Message: Sorted by categories: ['Home & Kitchen', 'Office', 'Smart Home']
+[2025-07-26 17:29:38] Action: Products reordered, Profile: fitness_fan, Message: Sorted by categories: ['Fitness', 'Audio', 'Electronics']
+[2025-07-26 17:29:42] Action: Products reordered, Profile: tech_enthusiast, Message: Sorted by categories: ['Electronics', 'Smart Home', 'Gaming', 'Audio']
+[2025-07-26 17:29:46] Action: Products reordered, Profile: tech_enthusiast, Message: Sorted by categories: ['Electronics', 'Smart Home', 'Gaming', 'Audio']
+[2025-07-26 17:29:48] Action: Products reordered, Profile: fitness_fan, Message: Sorted by categories: ['Fitness', 'Audio', 'Electronics']
+[2025-07-26 17:29:50] Action: Products reordered, Profile: home_maker, Message: Sorted by categories: ['Home & Kitchen', 'Office', 'Smart Home']
+[2025-07-26 17:29:59] Action: CSV Upload Success, Message: Uploaded 12 products from products2.csv
+[2025-07-26 17:29:59] Action: Page Loaded
+[2025-07-26 17:30:03] Action: Products reordered, Profile: tech_enthusiast, Message: Sorted by categories: ['Electronics', 'Smart Home', 'Gaming', 'Audio']
+[2025-07-26 17:30:06] Action: Products reordered, Profile: home_maker, Message: Sorted by categories: ['Home & Kitchen', 'Office', 'Smart Home']
+[2025-07-26 17:30:08] Action: Products reordered, Profile: fitness_fan, Message: Sorted by categories: ['Fitness', 'Audio', 'Electronics']
+[2025-07-26 17:30:11] Action: Products reordered, Profile: tech_enthusiast, Message: Sorted by categories: ['Electronics', 'Smart Home', 'Gaming', 'Audio']
+[2025-07-26 17:31:19] Action: Page Loaded
+[2025-07-26 17:31:26] Action: CSV Upload Success, Message: Uploaded 10 products from products1.csv
+[2025-07-26 17:31:26] Action: Page Loaded
+[2025-07-26 17:31:30] Action: Products reordered, Profile: tech_enthusiast, Message: Sorted by categories: ['Electronics', 'Smart Home', 'Gaming', 'Audio']
+[2025-07-26 17:31:33] Action: Products reordered, Profile: home_maker, Message: Sorted by categories: ['Home & Kitchen', 'Office', 'Smart Home']
+[2025-07-26 17:33:31] Action: Page Loaded
+[2025-07-26 17:33:36] Action: CSV Upload Success, Message: Uploaded 10 products from products1.csv
+[2025-07-26 17:33:36] Action: Page Loaded
+[2025-07-26 17:33:40] Action: Products reordered, Profile: tech_enthusiast, Message: Sorted by categories: ['Electronics', 'Gaming', 'Smart Home']
+[2025-07-26 17:33:43] Action: Products reordered, Profile: home_maker, Message: Sorted by categories: ['Home & Kitchen', 'Office', 'Fitness & Lifestyle']
+[2025-07-26 17:33:45] Action: Products reordered, Profile: tech_enthusiast, Message: Sorted by categories: ['Electronics', 'Gaming', 'Smart Home']
+[2025-07-26 17:33:52] Action: Products reordered, Profile: tech_enthusiast, Message: Sorted by categories: ['Electronics', 'Gaming', 'Smart Home']
+[2025-07-26 17:34:07] Action: Products reordered, Profile: home_maker, Message: Sorted by categories: ['Home & Kitchen', 'Office', 'Fitness & Lifestyle']

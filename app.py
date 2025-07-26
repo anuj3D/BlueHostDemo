@@ -1,50 +1,35 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for, flash
 import csv
 import os
-import io # Import io module for in-memory file handling
+import io
 from datetime import datetime
 
 app = Flask(__name__)
-app.secret_key = 'your_super_secret_key_for_flash_messages' # Required for flash messages
+app.secret_key = 'your_super_secret_key_for_flash_messages'
 
 # --- Configuration ---
-PRODUCTS_FILE = 'products.csv'
+PRODUCTS_FILE = 'products.csv' # This file is now purely for example/reference
 LOG_FILE = 'app_log.txt'
 ALLOWED_EXTENSIONS = {'csv'}
 
 # Global variable to hold the currently active product data
-# This will be updated when a new CSV is uploaded.
-# NOTE: For a production app, this data would ideally be stored in a database
-# (like Firestore, as discussed in the initial instructions) for persistence
-# across server restarts and scalability. For this demo, in-memory is fine.
 current_products_data = []
 
-# Hardcoded user profiles with their preferred product titles
+# Hardcoded user profiles with their preferred PRODUCT CATEGORIES
 USER_PROFILES = {
-    'tech_enthusiast': ['Laptop', 'External SSD', 'Monitor', 'Keyboard'],
-    'casual_user': ['Headphones', 'Mouse', 'USB Drive', 'Webcam']
+    # Tech enthusiast now prefers Electronics, Gaming, and Smart Home categories
+    'tech_enthusiast': ['Electronics', 'Gaming', 'Smart Home'],
+    'home_maker': ['Home & Kitchen', 'Office', 'Fitness & Lifestyle'] # Adjusted for broader categories
 }
+
+# Define required CSV columns
+REQUIRED_CSV_COLUMNS = ['title', 'description', 'image_url', 'price', 'category']
+
 
 def allowed_file(filename):
     """Checks if the uploaded file has an allowed extension."""
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-def load_initial_products():
-    """Loads products from the static CSV file at startup."""
-    products = []
-    try:
-        with open(PRODUCTS_FILE, mode='r', encoding='utf-8') as file:
-            csv_reader = csv.DictReader(file)
-            for row in csv_reader:
-                try:
-                    row['price'] = float(row['price'])
-                    products.append(row)
-                except ValueError:
-                    print(f"Warning: Could not convert price to float for row: {row}")
-    except FileNotFoundError:
-        print(f"Error: Initial {PRODUCTS_FILE} not found. Starting with empty product list.")
-    return products
 
 def log_action(action_type, product_title=None, profile=None, message=None):
     """Logs user actions or system events to a file."""
@@ -62,22 +47,9 @@ def log_action(action_type, product_title=None, profile=None, message=None):
         f.write(log_entry + '\n')
     print(f"Logged: {log_entry}") # For debugging purposes
 
-@app.before_request
-def initialize_products_if_empty():
-    """Initializes product data if it's empty (e.g., on first run or server restart)."""
-    global current_products_data
-    if not current_products_data:
-        current_products_data = load_initial_products()
-        if current_products_data:
-            log_action("System Init", message=f"Loaded {len(current_products_data)} products from {PRODUCTS_FILE}")
-        else:
-            log_action("System Init", message="No initial products loaded.")
-
 @app.route('/')
 def index():
     log_action("Page Loaded")
-    # The products passed here are just for initial rendering if no JS loads them
-    # The JS on the frontend will immediately call /get_products
     return render_template('index.html', products=current_products_data, profiles=USER_PROFILES.keys())
 
 @app.route('/upload_csv', methods=['POST'])
@@ -97,23 +69,26 @@ def upload_csv():
     
     if file and allowed_file(file.filename):
         try:
-            # Read the file content into a string
             stream = io.StringIO(file.stream.read().decode("UTF8"))
             csv_reader = csv.DictReader(stream)
+
+            if not all(col in csv_reader.fieldnames for col in REQUIRED_CSV_COLUMNS):
+                missing_cols = [col for col in REQUIRED_CSV_COLUMNS if col not in csv_reader.fieldnames]
+                flash(f'CSV format error: Missing required column(s): {", ".join(missing_cols)}. Expected {", ".join(REQUIRED_CSV_COLUMNS)}.', 'error')
+                log_action("CSV Upload Failed", message=f"Missing CSV columns: {missing_cols}")
+                return redirect(url_for('index'))
             
             new_products = []
             for i, row in enumerate(csv_reader):
-                # Basic validation for required fields
-                if not all(k in row for k in ['title', 'description', 'image_url', 'price']):
-                    flash(f'CSV format error: Missing required column in row {i+1}. Expected title, description, image_url, price.', 'error')
-                    log_action("CSV Upload Failed", message=f"CSV format error: Missing column in row {i+1}.")
-                    return redirect(url_for('index'))
-                
                 try:
                     row['price'] = float(row['price'])
+                    if not row.get('category'):
+                        flash(f'CSV data error: Missing category for product "{row.get("title", "Unknown")}" in row {i+1}.', 'error')
+                        log_action("CSV Upload Failed", message=f"Missing category in row {i+1}.")
+                        return redirect(url_for('index'))
                     new_products.append(row)
                 except ValueError:
-                    flash(f'CSV data error: Price is not a valid number in row {i+1}.', 'error')
+                    flash(f'CSV data error: Price is not a valid number in row {i+1} for product "{row.get("title", "Unknown")}".', 'error')
                     log_action("CSV Upload Failed", message=f"Price format error in row {i+1}.")
                     return redirect(url_for('index'))
             
@@ -123,7 +98,7 @@ def upload_csv():
                 return redirect(url_for('index'))
 
             current_products_data = new_products
-            flash(f'Successfully uploaded and updated products from {file.filename}!', 'success')
+            flash(f'Successfully uploaded and updated products from {file.filename}! ({len(new_products)} products loaded)', 'success')
             log_action("CSV Upload Success", message=f"Uploaded {len(new_products)} products from {file.filename}")
             return redirect(url_for('index'))
             
@@ -142,34 +117,40 @@ def get_products():
     data = request.json
     selected_profile = data.get('profile')
     
-    # Use the globally stored current_products_data
-    products = list(current_products_data) # Create a copy to avoid modifying the global list during sorting
+    products = list(current_products_data)
 
     if selected_profile and selected_profile in USER_PROFILES:
-        preferred_products_titles = USER_PROFILES[selected_profile]
+        preferred_categories = USER_PROFILES[selected_profile]
         
-        # Separate preferred and non-preferred products
         preferred_products = []
         other_products = []
+        
         for product in products:
-            if product['title'] in preferred_products_titles:
+            # Check if product category is in the preferred list
+            if product.get('category') in preferred_categories:
                 preferred_products.append(product)
             else:
                 other_products.append(product)
         
-        # Sort preferred products (e.g., by their order in the profile list)
-        # This is a simple sorting; for more complex ordering, you'd need a more robust algorithm.
-        preferred_products.sort(key=lambda p: preferred_products_titles.index(p['title']))
+        # Sort preferred products: first by the order of their category in preferred_categories, then alphabetically by title
+        def sort_key_preferred(p):
+            category = p.get('category')
+            # Assign a very high index if category is not in preferred_categories (shouldn't happen for preferred_products)
+            category_order = preferred_categories.index(category) if category in preferred_categories else len(preferred_categories)
+            return (category_order, p.get('title', ''))
+
+        preferred_products.sort(key=sort_key_preferred)
         
-        # Combine them: preferred products first, then others (optionally sorted, e.g., by title)
-        other_products.sort(key=lambda p: p['title'])
+        # Sort other products alphabetically by title
+        other_products.sort(key=lambda p: p.get('title', ''))
+        
         sorted_products = preferred_products + other_products
         
-        log_action("Products reordered", profile=selected_profile)
+        log_action("Products reordered", profile=selected_profile, message=f"Sorted by categories: {preferred_categories}")
         return jsonify(sorted_products)
     
-    # If no profile or invalid profile, return products as is (or with default sort)
-    products.sort(key=lambda p: p['title']) # Default sort by title
+    # If no profile or invalid profile, return products sorted alphabetically by title (default)
+    products.sort(key=lambda p: p.get('title', ''))
     return jsonify(products)
 
 
@@ -194,16 +175,9 @@ def log_add_to_cart():
     return jsonify({"status": "error", "message": "Product title missing"}), 400
 
 if __name__ == '__main__':
-    # Create an empty log file if it doesn't exist
     if not os.path.exists(LOG_FILE):
         with open(LOG_FILE, 'w') as f:
             f.write("Application Log:\n")
     
-    # Initial load of products when the app starts
-    current_products_data = load_initial_products()
-    if current_products_data:
-        log_action("System Init", message=f"Loaded {len(current_products_data)} products from {PRODUCTS_FILE}")
-    else:
-        log_action("System Init", message="No initial products loaded.")
-
-    app.run(debug=True) # debug=True is good for development, disable for production
+    log_action("System Init", message="Application started. Awaiting CSV upload for products.")
+    app.run(debug=True)

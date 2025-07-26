@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Our Products</title>
     <style>
+        /* ... (CSS remains the same) ... */
         body { font-family: 'Inter', sans-serif; margin: 20px; background-color: #f4f4f4; color: #333; }
         .container { max-width: 1200px; margin: auto; padding: 20px; background-color: #fff; border-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); }
         .header { text-align: center; margin-bottom: 30px; }
@@ -43,7 +44,6 @@
             <h1>Our Product Store</h1>
         </div>
 
-        <!-- Flash Messages -->
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
@@ -52,7 +52,6 @@
             {% endif %}
         {% endwith %}
 
-        <!-- CSV Upload Section -->
         <div class="upload-section">
             <h2>Upload New Product Inventory (CSV)</h2>
             <form action="/upload_csv" method="post" enctype="multipart/form-data">
@@ -60,7 +59,7 @@
                 <button type="submit">Upload CSV</button>
             </form>
             <p style="font-size: 0.85em; color: #555; margin-top: 15px;">
-                CSV should have columns: `title`, `description`, `image_url`, `price`.
+                CSV should have columns: `title`, `description`, `image_url`, `price`, **`category`**.
             </p>
         </div>
 
@@ -75,16 +74,17 @@
         </div>
 
         <div id="productContainer" class="product-grid">
-            <!-- Products will be loaded here by JavaScript -->
+            <p style="text-align: center; width: 100%; grid-column: 1 / -1;">
+                No products loaded. Please upload a CSV file to display the store inventory.
+            </p>
         </div>
     </div>
 
     <script>
         const productContainer = document.getElementById('productContainer');
         const profileSelect = document.getElementById('profileSelect');
-        let currentProfile = ''; // To store the currently selected profile
+        let currentProfile = '';
 
-        // Function to log actions to the backend
         async function logAction(actionType, productTitle = null) {
             const data = { actionType, productTitle, profile: currentProfile };
             try {
@@ -98,9 +98,8 @@
             }
         }
 
-        // Function to render products
         function renderProducts(products) {
-            productContainer.innerHTML = ''; // Clear existing products
+            productContainer.innerHTML = '';
             if (products.length === 0) {
                 productContainer.innerHTML = '<p style="text-align: center; width: 100%; grid-column: 1 / -1;">No products available. Please upload a CSV file.</p>';
                 return;
@@ -109,7 +108,7 @@
             products.forEach(product => {
                 const productCard = document.createElement('div');
                 productCard.classList.add('product-card');
-                productCard.setAttribute('data-title', product.title); // Store title for logging
+                productCard.setAttribute('data-title', product.title);
 
                 productCard.innerHTML = `
                     <img src="${product.image_url}" alt="${product.title}" onerror="this.onerror=null;this.src='https://placehold.co/220x220/808080/FFFFFF?text=No+Image';">
@@ -123,18 +122,14 @@
                     </div>
                 `;
 
-                // Add event listener for product card click (for logging)
                 productCard.addEventListener('click', (event) => {
-                    // Prevent logging when clicking the "Add to Cart" button directly
                     if (!event.target.classList.contains('add-to-cart-btn')) {
                         logAction('Click', product.title);
                     }
                 });
 
-                // Add event listener for "Add to Cart" button
                 productCard.querySelector('.add-to-cart-btn').addEventListener('click', () => {
                     logAction('Add to Cart', product.title);
-                    // Using a simple alert for demo, replace with custom modal for production
                     const messageBox = document.createElement('div');
                     messageBox.style.cssText = `
                         position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
@@ -145,7 +140,6 @@
                     messageBox.textContent = `${product.title} added to cart!`;
                     document.body.appendChild(messageBox);
 
-                    // CSS for fadeOut animation
                     const style = document.createElement('style');
                     style.innerHTML = `
                         @keyframes fadeOut {
@@ -159,16 +153,15 @@
                     setTimeout(() => {
                         messageBox.remove();
                         style.remove();
-                    }, 3000); // Remove after 3 seconds
+                    }, 3000);
                 });
 
                 productContainer.appendChild(productCard);
             });
         }
 
-        // Function to fetch and display products based on profile
         async function fetchAndDisplayProducts(profile = '') {
-            currentProfile = profile; // Update current profile
+            currentProfile = profile;
             try {
                 const response = await fetch('/get_products', {
                     method: 'POST',
@@ -183,14 +176,12 @@
             }
         }
 
-        // Event listener for profile selection change
         profileSelect.addEventListener('change', (event) => {
             fetchAndDisplayProducts(event.target.value);
         });
 
-        // Initial load of products when the page loads
         document.addEventListener('DOMContentLoaded', () => {
-            fetchAndDisplayProducts(''); // Load with default order
+            fetchAndDisplayProducts('');
         });
     </script>
 </body>
